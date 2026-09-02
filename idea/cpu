@@ -1,0 +1,35 @@
+This file descibes the CPU and instruction set, and related features.
+
+Memory can be mapped as tagged memory or untagged memory. Each byte of
+tagged memory has two tag bits, and each general 64-bit register has one
+tag bit. These are used for "capabilities", but do not confuse the CPU
+capability values with the operating system capabilities, which are
+different things but are related (operating system capabilities are
+represented using capability values in the CPU and in memory). In a
+register, the tag bit is set for a capability value or clear for a
+number. In memory, a capability value must be exactly eight bytes long,
+with the first tag bit set in the first seven bytes and the second tag
+bit set in the last seven bytes. If either tag bit is set but does not
+follow this pattern, then it is a broken and unusable capability value.
+
+You cannot do anything with capability values in application mode other
+than check whether or not it is a capability value and testing them for
+equality with other capability values, and copying them to/from memory
+(with restrictions) and general-purpose 64-bit registers; you cannot
+inspect the actual value of them, nor create them; therefore the values
+are opaque to the application program. In system mode, it is possible to
+avoid these restrictions.
+
+A broken capability value in memory cannot be read into a register, but
+it is possible to create a broken capability value in memory by overwriting
+some of the bytes but not others, therefore making it broken. When copying
+memory, it is an error if the second tag bit of the first byte of the
+source is set or if the first tag bit of the last byte of the source is
+set (this restriction is so that you cannot create a capability value by
+combining pieces of two different capabilities).
+
+All execution in application mode is deterministic; there aren't any
+instructions that can produce non-deterministic results (which are visible
+to the application program) in application mode. It must call the operating
+system to do any such things as I/O, including timing, random numbers, etc.
+

@@ -1,0 +1,24 @@
+There can be a physical switch on the computer which switches to the system
+special screen, which is implemented as a part of the operating system
+kernel. There is also a light to indicate if it is currently active.
+
+The system special screen is not a process, and all processes are suspended
+while it is displayed. It also takes up the entire screen, and the keyboard
+is used for the system special screen.
+
+The system special screen can be used for such things as:
+
+* View various status information.
+
+* Take a screenshot of the entire screen that would be displayed if it was
+not the system special screen, and is stored in a system screenshot memory.
+
+* Low-level debugging.
+
+* Manage low-level disk caching.
+
+* Manage processes, including changing scheduling, suspending or
+terminating them, dumping them to a partition for this purpose, etc.
+
+* Relinking and discarding capabilities of a processing.
+

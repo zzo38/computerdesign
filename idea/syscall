@@ -1,0 +1,49 @@
+This file describes system calls that application programs can make. There
+are not very many system calls, and some are only optimizations that do not
+normally have any observable effect.
+
+
+=== I/O functions ===
+
+* Set of capabilities to receive messages from, including the address to
+place the received message.
+
+* Set of capabilities to send messages from, including the address of the
+message to be sent.
+
+* Whether to send/receive all or any.
+
+* Locks to acquire and/or release, all at once.
+
+* Set of capabilities to be discarded.
+
+* Blocking or non-blocking.
+
+* Hard yield flag. This is a hint for scheduling.
+
+(The usual way for a process to terminate itself is to specify a blocking
+wait for all capabilities in an empty set. A process can also terminate
+itself by discarding all usable capabilities.)
+
+
+=== Create capabilities ===
+
+You can create one or more capabilities that this process can then send to
+other processes, in order to be able to communicate with them by the use of
+that capability. (It needs an existing capability to send it through.)
+
+
+=== Scheduling hint ===
+
+(TODO)
+
+
+=== Memory mapping ===
+
+A memory mapping must be given by someone else (such as the kernel). Each
+mapping can be read/write or read-only; a read/write mapping cannot be
+transferred without giving up your own access, but a read-only mapping can
+be transferred while retaining your own access. Also, some mappings will
+allow capabilities to be stored in them while others (such as mappings of
+video memory) cannot contain capabilities.
+

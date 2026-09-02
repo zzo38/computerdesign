@@ -1,0 +1,93 @@
+The keyboard should have a separate [Command] and [Control] key, and also
+separate keys for [Line Break] vs [Send].
+
+The keyboard manager (through the keyboard capability that a program might
+have) would use a 32-bit key code in a keyboard event. The key codes less
+than 0x200000 are used for stuff other than TRON characters, and the mask
+0x1F0000 will be used for modifier bits. The key codes in range 0x212121
+to 0xFFFDFDFD are TRON characters, with no modifier bits. Key codes greater
+than or equal to 0xFFFFFE00 are permanently invalid codes, which may be
+used in contexts where invalid codes are helpful; specifically, the code
+0xFFFFFFFF means the lack of a key code.
+
+How the keyboard input is translated to key codes depends on the
+application keyboard mode, and is normally only possible when focused.
+Furthermore, some combinations are handled by the window manager, IME,
+operating system, etc, in which case they are intercepted and the
+application program does not receive those events.
+
+A summary of the possible modes is:
+                      Parameter   IME    Release Events   Mod. Events
+ -------------------+-----------+------+----------------+-------------+
+ Long character     |     -     | Yes  |  No            |  No         |
+ Short character    | Code page | Var. |  No            |  No         |
+ Command            |     -     | No   |  No            |  No         |
+ Game               |     -     | No   |  Yes           |  Yes        |
+ Hybrid             | Code page | No   |  Yes           |  Yes        |
+
+* Long character: This mode allows text input with TRON characters. You
+can also input control characters, and use non-text characters. IME is
+enabled if available.
+
+* Short character: Inputs text with a specified character set of 8-bit
+characters. This can be used for situations where ASCII is required or
+where a specialized character set (e.g. APL) is required.
+
+* Command: No text input, although you can input ASCII characters without
+IME; they are treated as commands rather than as text, so some of the
+handling is different, although e.g. [Shift] and [Control] can still be
+used to produce different ASCII characters. (
+
+* Game: Other than key combinations reserved for the system, it treats the
+keys as a joypad with many buttons, and includes release events. It can
+also handle events for modifier keys. However, if [System] is held then no
+keyboard events (including that for the [System] key itself) can be sent to
+the application program. IME, text entry, etc are disabled. Keys such as
+[Shift] and [Control] are not treated as modifier keys but are like any
+other keys.
+
+* Hybrid: It can produce text like short character mode, although without
+IME and some of those features, and without control characters; keys other
+than those producing text characters work like game mode.
+
+(Events for joypad buttons (including release events) are possible in any
+mode, not only game mode.)
+
+Table of key codes:
+ <0000>-<00FF>  Characters in the current code page
+ <0100>-<011F>  ASCII control characters
+ <0120>-<017E>  ASCII graphic characters
+ <017F>         ASCII delete
+ <0200>-<02FF>  Numbered function keys (some use inherent modifiers)
+
+Modifier bits:
+
+* bit16 = Combinations including [Command]. These would usually bypass
+the current code page, and use the ASCII range when [Command] is combined
+with a ASCII or ISO 646 key.
+
+* bit17 = Number pad keys. For text entry with IME enabled, this bit would
+not be used, but it can be meaningful in other circumstances.
+
+* bit18 = Combinations including [System]. These combinations are not
+usually visible to application programs, but some of them may be exposed
+to the window manager.
+
+Notes about specific key codes:
+
+* ASCII graphic characters: In command mode, and in combinations that use
+the [Command] key, these may represent ISO 646 in some keyboard layouts.
+
+* [Begin Copy], [End Copy], [Cancel Copy]: These are used when multiple
+text characters will be sent at once, either from the IME or from being
+copied from another window or from keyboard input automation, etc. In such
+a case, it will be bracketed by [Begin Copy] and [End Copy], with [Cancel
+Copy] being used if the copy should be cancelled. This might be used to
+avoid unnecessarily redrawing the screen, to avoid automatically executing
+commands being copied (for security), etc.
+
+* [IME Begin], [IME Commit], [IME Cancel], [IME Substitute]: Some IME
+implementations might use these, to indicate parts of the text written by
+IME that has not yet been committed and might be changed. [IME Substitute]
+is like [IME Cancel] followed by [Begin Copy].
+

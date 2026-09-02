@@ -1,0 +1,70 @@
+This documents the "BIOS-level file system", which is not the same as the
+file system used by the operating system. The files in this file system are
+the disk partitions.
+
+A directory entry consists of four fields (20 bytes):
+
+* File ID (2 bytes): This uniquely identifies this file in this directory.
+
+* Type (1 byte): Indicates the file type.
+
+* Flags (1 byte): Flags with various functions (see below).
+
+* Data (16 bytes): For direct files, this is the contents of the file. For
+indirect files, it consists of two 64-bit sector numbers, being the start
+and end sector of the file. If the number of sectors cannot fit in a 64-bit
+number, then the virtual sector size is the usable disk capacity divided by
+2 to the power of 64, and then rounded up to the sector size. (Note that it
+is possible for indirect files to overlap, that files must be contiguous,
+and that the length of a file must be either exactly sixteen bytes or a
+multiple of the sector size.)
+
+The meaning of the flags is:
+
+* bit0 = Set for direct files, or clear for indirect files.
+
+* bit1 = Read only.
+
+* bit2 = In use.
+
+* bit3 = The contents is a directory listing.
+
+* bit4 = This bit is used for selective backups.
+
+* bit5 = This bit is used for partition managers to tell it that the
+contents of this file should not be moved.
+
+* bit6 = Indicates that this is the default file.
+
+* bit7 = Set if this file exists, or clear if it has been deleted or has
+never existed.
+
+File types can be:
+
+* 0x00 = Plain data file, of an unspecified type.
+
+* 0x01 = Subdirectory. (The flag bit3 also must be set, in this case.)
+
+* 0x02 = Executable file that takes over the entire system, such as the
+operating system kernel. (It usually also includes some configuration.)
+
+* 0x03 = NVRAM backup.
+
+* 0x04 = Executable file that can run with the ROM BASIC and without
+taking up the entire system, so that it can later return to the BASIC.
+
+* 0x05 = The file system partition for the full mode operating system,
+which is described in a separate file.
+
+* 0x06 = PC disk image.
+
+* 0x07 = Swap area.
+
+* 0x08 = RAID configuration.
+
+* 0x09 = BASIC file.
+
+(The normal booting process would involve selecting the appropriate file
+of type 0x02 (possibly configured in NVRAM or selected manually, or using
+the default file), and loading its contents into RAM and then starting to
+execute it from the beginning.)

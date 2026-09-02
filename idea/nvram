@@ -1,0 +1,22 @@
+The stuff that might be stored in the NVRAM might include:
+
+* Time zone information.
+
+* Which RAM blocks to disable (usually due to bad RAM).
+
+* Management ID, which is 16-bits. This is normally zero and would not
+normally be useful, but 
+
+* Default boot device and partition. (It can also be configured to boot
+to ROM BASIC.)
+
+* Security settings for operating system and ROM BASIC. These will be
+used to permanently disable some features (e.g. the hard drive), until
+the computer is restarted.
+
+There might also be internal jumpers (or switches) to switch the default
+NVRAM bank, and this can also be switched by the CPU (XOR by the default
+bank number), as well as the ability for the CPU to lock the access until
+the computer is restarted. These internal jumpers/switches might also be
+used to disable NVRAM changes, and to disable some features when using
+the ROM BASIC.

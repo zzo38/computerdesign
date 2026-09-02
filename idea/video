@@ -1,0 +1,71 @@
+The working of the video card is described here.
+
+Unlike the main memory, the video memory does not have tag bits, so it
+cannot contain capability values.
+
+The screen consists of windows; a window that is mapped has a rectangular
+area on the screen (or inside of another window) that it corresponds to,
+that the contents of the window is displayed. Additionally, a window has
+a frame program and pixel program, and several registers.
+
+Some registers (the "protected registers") can only be set by the operating
+system (from the CPU), while other registers will be writable by the frame
+program as well. The protected registers are not readable either.
+
+The protected registers can be:
+
+* Position (relative to container) and size.
+
+* Window zoom, which causes the contents of the window to appear bigger on
+the screen. Only integer zooms are possible.
+
+* Offset and length into video memory assigned to this window. It is
+allowed to overlap other memory. All memory accesses by this window will
+automatically apply the offset specified here and limit access to the
+length specified here.
+
+The unprotected registers can be:
+
+* Tile width and tile height. The pixel coordinates within the window are
+effectively division and modulo by these numbers and the results are used
+as input into the pixel program; however, the implementation would be more
+efficient than division and modulo.
+
+* Tile X skip and tile Y skip. These are effectively multiplied by the X
+and Y tile positions (although more efficiently which does not require an
+actual multiplication) to use as inputs to the pixel program, rather than
+using the X and Y coordinates directly.
+
+* Fine X scroll and fine Y scroll. These are added to the window pixel
+coordinates before applying the other calculations.
+
+* General purpose registers. These are readable and writable by the frame
+program, and are readable (but not writable) by the pixel program.
+
+The frame program and pixel program involve different instruction sets and
+are used for different purposes.
+
+The frame program can read and write video memory (within the window's
+memory block) and unprotected registers, and is executed once per frame;
+this can be used to precalculate things especially those which will change
+per frame or depend on things set by application programs.
+
+The pixel program is executed for each pixel (possibly in parallel, in some
+cases), and is much more limited than the frame program; it can only read
+video memory and the unprotected general purpose registers, as well as the
+inputs of the tile and pixel position. Flow control can only depend on the
+unprotected general purpose registers, and not on the other inputs or on
+intermediate calculated values. The output of the pixel program is always
+24-bits, with 8-bits per RGB channel, to decide the colour of this pixel.
+
+In addition to windows, there are also sprites, which belong to a window
+and can be displayed in that window as well as its subwindows, and overlaps
+the contents of the window and subwindows. A sprite only has a position,
+palette, and picture, so does not have all features of windows. (The mouse
+cursor would use a sprite attached to the root window; some programs might
+use additional sprites.)
+
+The date/time display of the operating system would use its own window and
+contains the appropriate fixpitch bitmap fonts for the language being used,
+and then the numbers are displayed by the pixel program. Hopefully, this
+would make it efficient even if updated every second.

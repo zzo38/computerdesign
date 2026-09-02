@@ -1,0 +1,7 @@
+This is plans for design of a computer and operating system.
+
+charset/ = Character set documentation.
+doc/ = The documentation.
+idea/ = The incompleted documentation and designs of ideas.
+imp/ = Reference implementations.
+

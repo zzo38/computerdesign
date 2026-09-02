@@ -1,0 +1,48 @@
+The file system does not have directory structures and file names, and also
+lacks metadata such as date/time, permissions, etc (these things can be
+added by the data in forks, though).
+
+It does have transactions (which can be nested), and each file contains
+forks each of which is identified by a 32-bit integer, and the forks then
+contain the byte streams. The byte streams can also contain links to other
+files (or to itself).
+
+The forks numbered 0x0000 to 0xFFFF will have standardized meanings, while
+the other fork numbers have no standardized meanings and their meanings
+will be specific to that file. Forks numbered 0xFFFFFF00 to 0xFFFFFFFF are
+for internal use by the file system implementation and are not normally
+accessible by application programs.
+
+A link takes up eight bytes, but its value is not read like ordinary bytes
+(when read by a program it appears as a capability value; see the "cpu"
+file). The link references another file (or the same file), and can
+optionally be specified as a "copy-on-write" link; if so then whenever the
+referenced file changes (regardless of where the reference to that file
+came from; not necessarily this link), it will make a copy and then the
+link will point to the original unchanged file.
+
+
+=== Standard forks ===
+
+Some possibilities of standard forks (this specification might be changed
+in future) might be:
+
+0x0000 = Primary data in the standardized file format.
+
+0x0001 = Byte stream data, for compatibility with programs for other
+operating systems or VM codes, such as DOS or uxn programs.
+
+0x0002 = Version control data (links to previous versions, etc).
+
+0x0003 = Security information. Access to this fork is usually restricted.
+
+0x0004 = Executable code.
+
+0x0005 = Message schema. This would be needed to start a executable program
+properly, so that it knows what schemas are possible for the initial
+message, which should contain at least one capability since otherwise it
+would not be able to do any I/O and would be terminated immediately unless
+a debugger is attached.
+
+0x0006 = Symbol table and debug information for executable files.
+

@@ -1,0 +1,161 @@
+Consists of the type, length, and value, in that order.
+
+The type is one byte in range 0x01 to 0xFF except 0x80, and if it is in the
+range 0x78 to 0x7F or 0xF8 to 0xFF then one additional type byte follows.
+If the high bit is clear then it is a primitive type, and if the high bit
+is set then it is a constructed type.
+
+The length can be one of the following:
+
+* 0x00 to 0xF0 = The value is that many bytes long.
+
+* 0xF1 to 0xF8 = One to eight additional bytes follow, which specify the
+length of the value. (Overlong encodings are allowed, since that makes it
+possible to fill up a part of the file and then go back and fill up the
+length later.)
+
+* 0xF9 = Primitive stream. This is only valid if the type is primitive. In
+this case, the value consists of zero or more segments which will be
+concatenated together; each segment starts with one byte 0x01 to 0xFF which
+specifies the length of that segment (in bytes), and terminated by 0x00.
+
+* 0xFA = Constructed stream. This is only valid if the type is constructed,
+and means that the value continues until a byte 0x00 is found at this level
+outside of any other primitive or constructed value it contains.
+
+* 0xFB to 0xFF = Reserved for future use.
+
+The data types are explained below. If the type is primitive, then the
+format of the value depends on the type. If the type is constructed, then
+the format of the value is zero or more type/length/value items, and the
+specific type may include further constraints about what is expected.
+
+[0x01 (Null)] The value is empty.
+
+[0x02 (False)] The value is empty; represents a false boolean value.
+
+[0x03 (True)] The value is empty; represents a true boolean value.
+
+[0x04 (Octet string)] A sequence of bytes.
+
+[0x05 (Bit string)] A sequence of bits, from the high bit to the low bit of
+each byte. The last byte of this value tells the number of unused bits in
+the low nybble (which must be 0 to 7, so bit3 must be clear); the high
+nybble represents four bits of data. Unused bits start from the lowest bits
+of the high nybble of the last byte, and the low bits of the previous byte
+as well if there is more than four unused bits. Unused bits must be clear.
+
+[0x06 (TRON string)] String of Extended TRON characters, encoded as TRON-8.
+Control characters can be included as well and can be used for some kinds
+of formatting that do not need other types.
+
+[0x07 (ASCII string)] A string of ASCII characters. It is not supposed to
+include characters with the high bit set, but it is allowed and if there
+are any then each byte must be interpreted as one character.
+
+[0x08 (Application string)] A string of 8-bit characters, using the
+character set specific to the application (which can be declared in
+other parts of the file).
+
+[0x09 (Negative integer)] A integer where all of the bits higher than the
+explicitly specified bits are implicitly set, making the value negative.
+
+[0x0A (Non-negative integer)] A unsigned integer.
+
+[0x0B (Mixed string)] Like octet string but links and/or capabilities
+(which have a length of eight bytes) are also allowed.
+
+[0x0C (Signed object identifier)] An arbitrary nonempty sequence of bytes,
+with the high bit of the last byte clear. It is a superset of OIDs, and
+have the same binary representation, but invalid OIDs can be valid SOIDs.
+See below for more information.
+
+[0x0D (Relative SOID)]
+
+[0x0E (Floating point)]
+
+[0x0F (Multicultural time)]
+
+[0x60 to 0x77 (Context specific)]
+
+[0x7800 to 0x78FF (Context specific)]
+
+[0x81 (Sequence)]
+
+[0x82 (Set)]
+
+[0x83 (Structure)] Contains arbitrary items, interpreted as a structure
+with fields. (This is like one of the uses of the "sequence" in ASN.1, the
+other use being the type 0x81.)
+
+[0x84 (Extension)]
+
+[0x85 (Key/value list)]
+
+[0x86 (Rational number)]
+
+[0x87 (Complex number)]
+
+[0x88 (Translation list)]
+
+[0x89 (Section)]
+
+[0x8A (Paragraph)]
+
+[0x8B (Text span)]
+
+[0x8C (Block quotation)]
+
+[0x8D (Mathematical typesetting)]
+
+[0x8E (Zoned spreadsheet)]
+
+[0x8F (Calculation)]
+
+[0x90 (Time series)]
+
+[0x91 (Tagged data)]
+
+[0x92 (Diagram)]
+
+[0x93 (CAQL script)]
+
+[0x94 (Matrix)]
+
+[0x95 (Function)]
+
+[0x96 (Table)]
+
+[0x97 (Named block)] Assigns a name to a block for the purpose of queries
+in this file that refer to blocks by their name and for references to
+this part of the file from other files and other parts of this file. It
+has two items, the first being the name and the second being the item that
+is being named in this way.
+
+[0xE0 to 0xF7 (Context specific)]
+
+[0xF800 to 0xF8FF (Context specific)]
+
+
+=== Signed object identifiers ===
+
+A signed object identifier (SOID) is like a OID, and is a superset of OIDs,
+that allows any nonempty byte sequence, as long as the high bit of the last
+byte is clear. Like OIDs, they can be intepreted as a sequence of integers,
+and can be made as decimal format; however, the integers can be negative in
+addition to positive and zero.
+
+If the first byte of a piece is 0x80 then the second byte is worth one more
+than it normally is (1 to 128 instead of 0 to 127) and then the result is
+subtracted from zero to make it negative. (For example, <80 00> represents
+-1 and <80 80 7F> represents -255.)
+
+The first piece is split even if it is negative, and the splitting works as
+described in this case: The bitwise complement is used, and then shifted
+right by three. If the shifted out bits are 0 to 6 then add 3 to make the
+first number, and then the rest of the bits are the second number. If the
+shifted out bits are 7 then the first number is 9 and then the rest of the
+bits will be complemented (reversing the original complement) and used as
+the second number, so that it will be negative.
+
+(For example, the SOID <80 01 80 01> corresponds to "4.0.-2".)
