@@ -1,5 +1,6 @@
 The keyboard should have a separate [Command] and [Control] key, and also
-separate keys for [Line Break] vs [Send].
+separate keys for [Line Break] vs [Send], and possibly also separate keys
+for [Tab] vs [Next Field].
 
 The keyboard manager (through the keyboard capability that a program might
 have) would use a 32-bit key code in a keyboard event. The key codes less

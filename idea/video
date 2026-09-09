@@ -53,10 +53,9 @@ per frame or depend on things set by application programs.
 The pixel program is executed for each pixel (possibly in parallel, in some
 cases), and is much more limited than the frame program; it can only read
 video memory and the unprotected general purpose registers, as well as the
-inputs of the tile and pixel position. Flow control can only depend on the
-unprotected general purpose registers, and not on the other inputs or on
-intermediate calculated values. The output of the pixel program is always
-24-bits, with 8-bits per RGB channel, to decide the colour of this pixel.
+inputs of the tile and pixel position. The pixel program does not have any
+flow controls. The output of the pixel program is always 24-bits, with
+8-bits per RGB channel, to decide the colour of this pixel.
 
 In addition to windows, there are also sprites, which belong to a window
 and can be displayed in that window as well as its subwindows, and overlaps

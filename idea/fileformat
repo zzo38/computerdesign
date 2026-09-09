@@ -23,7 +23,16 @@ specifies the length of that segment (in bytes), and terminated by 0x00.
 and means that the value continues until a byte 0x00 is found at this level
 outside of any other primitive or constructed value it contains.
 
-* 0xFB to 0xFF = Reserved for future use.
+* 0xFB = The rest of the data in this file is this item, so the length is
+the remaining length of the file, so further items are not possible. This
+is only allowed as the top item in a file or contained directly within a
+item having this kind of length, and it limited to only some of the types,
+as follows: octet string, ASCII string, mixed string, sequence, structure,
+extension, tagged data, and time series. Furthermore, such a thing is not
+allowed to contain another one with this kind of length unless the outer
+item that contains it is a structure, extension, or tagged data.
+
+* 0xFC to 0xFF = Reserved for future use.
 
 The data types are explained below. If the type is primitive, then the
 format of the value depends on the type. If the type is constructed, then

@@ -33,3 +33,25 @@ instructions that can produce non-deterministic results (which are visible
 to the application program) in application mode. It must call the operating
 system to do any such things as I/O, including timing, random numbers, etc.
 
+
+=== Registers ===
+
+The general registers are 64-bits and split into pieces as follows. The
+diagrams below show the high octet on left and low octet on the right, and
+shows the names of the peices of the registers.
+
+ hi        lo
+   -------L
+   ------H-
+   ------XX
+   ----YY--
+   ----EEEE
+   ZZZZ----
+   RRRRRRRR
+
+These registers will be numbered 0 to 127, so that the names can be e.g.
+L0, H0, E15, R18, etc.
+
+Only the R registers can contain capability values, and so, then the
+smaller pieces cannot be used.
+

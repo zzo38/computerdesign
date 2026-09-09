@@ -64,6 +64,11 @@ which is described in a separate file.
 
 * 0x09 = BASIC file.
 
+* 0x0A = Directory of bad blocks. (Also set the flag bit3.)
+
+* 0x0B = The contents of this file are bad blocks, and cannot contain any
+usable data. This file should be indirect, because direct is not useful.
+
 (The normal booting process would involve selecting the appropriate file
 of type 0x02 (possibly configured in NVRAM or selected manually, or using
 the default file), and loading its contents into RAM and then starting to

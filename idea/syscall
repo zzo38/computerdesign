@@ -33,7 +33,7 @@ other processes, in order to be able to communicate with them by the use of
 that capability. (It needs an existing capability to send it through.)
 
 
-=== Scheduling hint ===
+=== Scheduling hints ===
 
 (TODO)
 

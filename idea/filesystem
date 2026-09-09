@@ -2,10 +2,18 @@ The file system does not have directory structures and file names, and also
 lacks metadata such as date/time, permissions, etc (these things can be
 added by the data in forks, though).
 
-It does have transactions (which can be nested), and each file contains
-forks each of which is identified by a 32-bit integer, and the forks then
-contain the byte streams. The byte streams can also contain links to other
-files (or to itself).
+It does have transactions (which can be nested), and transactions can
+involve multiple files at once. All access (including creation of files)
+requires the use of transactions which can be read-only or read/write.
+If a file is created and the transaction that created that file has not
+yet been committed, then links to that file can only be created within
+the same transaction that created the file and other transactions that
+are contained within that transaction.
+
+Each file contains forks each of which is identified by a 32-bit integer,
+and the forks then contain the byte streams. The byte streams can also
+contain links to other files (or to itself). A empty fork is the same as
+a nonexisting fork.
 
 The forks numbered 0x0000 to 0xFFFF will have standardized meanings, while
 the other fork numbers have no standardized meanings and their meanings
@@ -20,6 +28,9 @@ optionally be specified as a "copy-on-write" link; if so then whenever the
 referenced file changes (regardless of where the reference to that file
 came from; not necessarily this link), it will make a copy and then the
 link will point to the original unchanged file.
+
+Files are automatically deleted if nobody (including running programs) has
+a reference to the file
 
 
 === Standard forks ===
@@ -45,4 +56,10 @@ would not be able to do any I/O and would be terminated immediately unless
 a debugger is attached.
 
 0x0006 = Symbol table and debug information for executable files.
+
+0x0007 = Used for "foreign links", when a link is needed to a file on a
+different file system than the file containing the link.
+
+0x0008 = In the root file, this is used for mapping incoming foreign links.
+(It can be used in other files too but you don't usually need to.)
 
