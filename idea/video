@@ -68,3 +68,13 @@ The date/time display of the operating system would use its own window and
 contains the appropriate fixpitch bitmap fonts for the language being used,
 and then the numbers are displayed by the pixel program. Hopefully, this
 would make it efficient even if updated every second.
+
+
+=== Frame instruction set ===
+
+(TODO)
+
+
+=== Pixel instruction set ===
+
+(TODO)

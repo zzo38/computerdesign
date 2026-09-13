@@ -1,0 +1,52 @@
+Although implementations may differ in some aspects (such as power), there
+are soem common specifications for them.
+
+It might be able to use ATX power, so the expansion and common hardware
+components usable in different implementations can be made to use the
+voltages specified for ATX power (+3.3, +5, +12, -12, and -5).
+
+The external connectors and drives can include:
+
+  RS-232
+  Ethernet
+  DVD recorder
+  Digi-RGB video out
+  Digi-RGB video in
+  Analog audio out
+  Analog audio in
+  Keyboard connector
+  GPIO
+  MIDI
+
+(Maybe there should be some others as well, e.g. for printers, joystick)
+
+
+=== Keyboard ===
+
+There is a dedicated keyboard port. The mouse is connected through the
+keyboard, and does not have its own connector on the computer. (The same
+connector for the mouse could also be used for e.g. barcode scanner.)
+
+It can use a protocol (in both directions) with ten bits. The high 2-bits
+specify the type of code, which can be:
+
+* ON: Indicates a key is pushed.
+
+* OFF: Indicates a key is released.
+
+* COMMAND: Commands other than pushed/released.
+
+* DATA: Data for a command.
+
+Some commands from the computer to the keyboard might be:
+
+* Reset the keyboard and tell the keyboard to send the ON codes for all of
+the keys that are currently pushed, in case some have been missed.
+
+* Set lights.
+
+
+=== Video ===
+
+(TODO)
+

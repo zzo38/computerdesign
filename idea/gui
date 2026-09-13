@@ -1,0 +1,29 @@
+Normally, there would be a status line with the date/time and possibly
+other relevant information (e.g. keyboard and IME status), and one or
+more command shell windows (although you can close them and open them
+again later, or configure to start something else).
+
+A window can have "window indicators" for features of the program that is
+running such as capabilities, e.g. a audio indicator for audio, and you
+can use these indicators to control these things (e.g. audio volume and
+audio redirection).
+
+You might also be able to group windows together and have them into tabbed
+groups, or to put subwindows arranged in whatever way you want to within
+another window (which can itself be moved, hidden, etc), as well as to be
+able to separate windows; this usually makes it unnecessary for application
+programs to implement their own MDI and tabbed interface.
+
+For the usual GUI widgets, and for the windows themselves and the window
+indicators, they can be interoperated between other windows, including the
+command shell. For example, you can use the data shown in one window with
+other one that can process it (sort, filter, query, etc), or to drag a
+command button from a GUI into the command shell to have it able to execute
+as a part of a script (with conditions, loops, etc). (The other way around
+can also be possible; you can create a GUI window with buttons and other
+widgets to operate and display data with a program that does not have GUI.)
+
+For text editing and text display, there would need to be a "reveal codes"
+function (similar to WordPerfect), with the ability to disable ligatures,
+kerns, and Composite Character VM, when the reveal codes is activated. The
+reveal codes is necessary to make WYSIWYG editing in an acceptable way.
