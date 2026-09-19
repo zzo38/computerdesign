@@ -68,6 +68,9 @@ which is described in a separate file.
 
 * 0x0B = The contents of this file are bad blocks, and cannot contain any
 usable data. This file should be indirect, because direct is not useful.
+(A program that copies a disk image should have the option to avoid making
+copies of files of this type; however, this should not be mandatory, and
+it should be possible to make an exact copy instead if desired.)
 
 (The normal booting process would involve selecting the appropriate file
 of type 0x02 (possibly configured in NVRAM or selected manually, or using

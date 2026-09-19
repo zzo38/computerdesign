@@ -3,7 +3,8 @@ are soem common specifications for them.
 
 It might be able to use ATX power, so the expansion and common hardware
 components usable in different implementations can be made to use the
-voltages specified for ATX power (+3.3, +5, +12, -12, and -5).
+voltages specified for ATX power (+3.3, +5, +12, -12, and -5), and also
+the colours if wires of ATX power.
 
 The external connectors and drives can include:
 
@@ -48,5 +49,13 @@ the keys that are currently pushed, in case some have been missed.
 
 === Video ===
 
-(TODO)
+The video output is using Digi-RGB, which is one way video that has pins
+for the bits of the RGB channels, as well a pixel clock and vblank, and
+ground and power.
+
+The aspect ratio must be 4:3, 5:4, 8:5, or 16:9; each of these has a
+different squarefree core and that is how the display would know what
+the aspect ratio is.
+
+(The video signal can also be recorded.)
 

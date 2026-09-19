@@ -32,7 +32,7 @@ extension, tagged data, and time series. Furthermore, such a thing is not
 allowed to contain another one with this kind of length unless the outer
 item that contains it is a structure, extension, or tagged data.
 
-* 0xFC to 0xFF = Reserved for future use.
+* 0xFC to 0xFF = Reserved for future use (possibly never will be used).
 
 The data types are explained below. If the type is primitive, then the
 format of the value depends on the type. If the type is constructed, then
@@ -101,13 +101,17 @@ other use being the type 0x81.)
 
 [0x85 (Key/value list)]
 
-[0x86 (Rational number)]
+[0x86 (Rational number)] Contains two integers, the first being the
+numerator and the second being the denominator.
 
 [0x87 (Complex number)]
 
-[0x88 (Translation list)]
+[0x88 (Translation list)] This is like a key/value list but the keys
+specify the languages, and the corresponding value will be used for
+that language.
 
-[0x89 (Section)]
+[0x89 (Section)] A section of a text document. It can contain paragraphs
+and other stuff like that, as well as subsections.
 
 [0x8A (Paragraph)]
 
@@ -121,7 +125,8 @@ other use being the type 0x81.)
 
 [0x8F (Calculation)]
 
-[0x90 (Time series)]
+[0x90 (Time series)] A sequence of data that is keyed by time intervals,
+which are in chronological order.
 
 [0x91 (Tagged data)]
 
@@ -141,6 +146,9 @@ this part of the file from other files and other parts of this file. It
 has two items, the first being the name and the second being the item that
 is being named in this way.
 
+[0x98 (Character set declaration)] Declares the character set to be used by
+application strings that this block contains.
+
 [0xE0 to 0xF7 (Context specific)]
 
 [0xF800 to 0xF8FF (Context specific)]
@@ -154,10 +162,10 @@ byte is clear. Like OIDs, they can be intepreted as a sequence of integers,
 and can be made as decimal format; however, the integers can be negative in
 addition to positive and zero.
 
-If the first byte of a piece is 0x80 then the second byte is worth one more
-than it normally is (1 to 128 instead of 0 to 127) and then the result is
-subtracted from zero to make it negative. (For example, <80 00> represents
--1 and <80 80 7F> represents -255.)
+If the first byte of a piece is 0x80 then it represents a negative number.
+In this case, treat the rest of the bytes as making up a bijective base 128
+number (instead of the non-bijective) and then make it negative; this means
+that each byte is worth one more than it normally is.
 
 The first piece is split even if it is negative, and the splitting works as
 described in this case: The bitwise complement is used, and then shifted
@@ -167,4 +175,37 @@ shifted out bits are 7 then the first number is 9 and then the rest of the
 bits will be complemented (reversing the original complement) and used as
 the second number, so that it will be negative.
 
-(For example, the SOID <80 01 80 01> corresponds to "4.0.-2".)
+
+=== Control characters ===
+
+In some types of character strings, some control characters would be used.
+
+In a TRON string, it might use some of the below codes. The codes <00> to
+<20>, <7F>, and codes <FF21> to <FF7E>, can be used as control characters.
+
+<> Begin left to right. (The text direction of the paragraph must be
+specified separately (outside of the character strings), and these control
+characters are not needed if the text direction matches that of the
+paragraph. The control characters to set text direction cannot be used in
+vertical paragraphs.)
+
+<> Begin right to left.
+
+<> End left to right.
+
+<> End right to left.
+
+<> Begin base text of furigana block.
+
+<> Begin furigana text of furigana block.
+
+<> End furigana block.
+
+<> Begin bold.
+
+<> End bold.
+
+<> Begin emphasis.
+
+<> End emphasis.
+

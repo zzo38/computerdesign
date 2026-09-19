@@ -1,0 +1,9 @@
+This describes processes and executable files.
+
+When a new process starts, it receives an initial message (although this
+is optional if a debugger is attached, otherwise it is required). This
+initial message is like any other message and can contain any bytes and/or
+capabilities, and should contain at least one capability since otherwise
+it cannot do any I/O and will be terminated autmoatically (unless there is
+a debugger attached, in which case it cn be controlled by a debugger).
+

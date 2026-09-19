@@ -20,5 +20,5 @@ not the system special screen, and is stored in a system screenshot memory.
 * Manage processes, including changing scheduling, suspending or
 terminating them, dumping them to a partition for this purpose, etc.
 
-* Relinking and discarding capabilities of a processing.
+* Relinking and discarding capabilities of a process.
 
