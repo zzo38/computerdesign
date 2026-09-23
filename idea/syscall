@@ -45,5 +45,16 @@ mapping can be read/write or read-only; a read/write mapping cannot be
 transferred without giving up your own access, but a read-only mapping can
 be transferred while retaining your own access. Also, some mappings will
 allow capabilities to be stored in them while others (such as mappings of
-video memory) cannot contain capabilities.
+video memory) cannot contain capabilities. You can convert any read/write
+mapping that you have access to, into read-only.
+
+
+=== Process name ===
+
+Sets a process name for debugging purposes in the system special screen
+(the process name does not do anything else and cannot be read by
+anything). It can fail for various reasons (including not having permission
+to set it for the specified process, the name being invalid, the kernel
+being compiled in such a way that it doesn't use this, etc), in which case
+nothing happens; there is no error code to indicate failure.
 

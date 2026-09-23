@@ -5,14 +5,17 @@ The stuff that might be stored in the NVRAM might include:
 * Which RAM blocks to disable (usually due to bad RAM).
 
 * Management ID, which is 16-bits. This is normally zero and would not
-normally be useful, but 
+normally be useful, but there are some potential uses.
 
 * Default boot device and partition. (It can also be configured to boot
-to ROM BASIC.)
+to ROM BASIC, and it is possible to force booting to ROM BASIC by holding
+the appropriate key combination before the operating system starts.)
 
 * Security settings for operating system and ROM BASIC. These will be
 used to permanently disable some features (e.g. the hard drive), until
 the computer is restarted.
+
+* RTC reference (0 means TAI; other numbers are currently undefined).
 
 There might also be internal jumpers (or switches) to switch the default
 NVRAM bank, and this can also be switched by the CPU (XOR by the default
