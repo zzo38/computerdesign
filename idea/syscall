@@ -58,3 +58,5 @@ to set it for the specified process, the name being invalid, the kernel
 being compiled in such a way that it doesn't use this, etc), in which case
 nothing happens; there is no error code to indicate failure.
 
+(This might become unnecessary, if there will be a better way to do what
+this is intended for.)
