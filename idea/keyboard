@@ -85,10 +85,13 @@ copied from another window or from keyboard input automation, etc. In such
 a case, it will be bracketed by [Begin Copy] and [End Copy], with [Cancel
 Copy] being used if the copy should be cancelled. This might be used to
 avoid unnecessarily redrawing the screen, to avoid automatically executing
-commands being copied (for security), etc.
+commands being copied (for security), etc. However, in most cases, this is
+not needed and the objects can be copied directly, but if that is not
+possible (or not desirable) for whatever reason, then this can be used.
 
-* [IME Begin], [IME Commit], [IME Cancel], [IME Substitute]: Some IME
-implementations might use these, to indicate parts of the text written by
-IME that has not yet been committed and might be changed. [IME Substitute]
-is like [IME Cancel] followed by [Begin Copy].
+* [IME Begin], [IME Commit], [IME Restart], [IME Cancel], [IME Substitute]:
+Some IME implementations might use these, to indicate parts of the text
+written by IME that has not yet been committed and might be changed. [IME
+Substitute] is like [IME Cancel] followed by [Begin Copy], and [IME
+Restart] is like [IME Cancel] followed by [IME Begin].
 

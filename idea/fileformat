@@ -85,6 +85,14 @@ See below for more information.
 
 [0x0F (Multicultural time)]
 
+[0x10 (Name)] A restricted subset of a application string that uses the
+CAQL character set, suitable for names in CAQL scripts.
+
+[0x11 (Reference to fork)] Reference to a fork in this or another file.
+If this file, it is four bytes specifying the fork number; if another
+file, it is the same but also includes the link to the other file (although
+this is also possible even if it is the same file).
+
 [0x60 to 0x77 (Context specific)]
 
 [0x7800 to 0x78FF (Context specific)]
@@ -149,6 +157,13 @@ is being named in this way.
 [0x98 (Character set declaration)] Declares the character set to be used by
 application strings that this block contains.
 
+[0x99 (Alternate representation)] This type is used when the actual data is
+stored in another fork of the file in a different format than this one, and
+this data item then includes the SOID to specify what format (which another
+program might be able to convert, or use directly). For example, this can
+be used for compressed files, or for files that might be more efficient in
+one way than another way, for B-trees, etc.
+
 [0xE0 to 0xF7 (Context specific)]
 
 [0xF800 to 0xF8FF (Context specific)]
@@ -208,4 +223,10 @@ vertical paragraphs.)
 <> Begin emphasis.
 
 <> End emphasis.
+
+<> Begin underline.
+
+<> End underline.
+
+<> Soft hyphenation.
 
