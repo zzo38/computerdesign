@@ -22,7 +22,7 @@ message to be sent.
 * Hard yield flag. This is a hint for scheduling.
 
 (The usual way for a process to terminate itself is to specify a blocking
-wait for all capabilities in an empty set. A process can also terminate
+wait for any capabilities in an empty set. A process can also terminate
 itself by discarding all usable capabilities.)
 
 
