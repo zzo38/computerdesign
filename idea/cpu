@@ -33,6 +33,9 @@ instructions that can produce non-deterministic results (which are visible
 to the application program) in application mode. It must call the operating
 system to do any such things as I/O, including timing, random numbers, etc.
 
+There are also no serial numbers or other identifications that are visible
+to any programs, including the kernel and BIOS.
+
 
 === Registers ===
 

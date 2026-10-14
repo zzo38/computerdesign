@@ -37,6 +37,9 @@ that capability. (It needs an existing capability to send it through.)
 
 (TODO)
 
+Note that there is no way to check whether or not a scheduling hint is
+successful, and that this system call is not guaranteed to do anything.
+
 
 === Memory mapping ===
 

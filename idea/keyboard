@@ -37,7 +37,7 @@ where a specialized character set (e.g. APL) is required.
 * Command: No text input, although you can input ASCII characters without
 IME; they are treated as commands rather than as text, so some of the
 handling is different, although e.g. [Shift] and [Control] can still be
-used to produce different ASCII characters. (
+used to produce different ASCII characters.
 
 * Game: Other than key combinations reserved for the system, it treats the
 keys as a joypad with many buttons, and includes release events. It can
